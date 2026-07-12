@@ -38,9 +38,7 @@ export function Footer() {
             <p className="mx-auto mt-4 max-w-md font-body text-sm leading-7 text-muted-foreground lg:mx-0">
               The AI agent with a human touch — for bookkeeping,
               virtual assistance, data entry, inventory, payroll,
-              and fund accounting.
-              <br />
-              Perfected by Professionals.
+              and fund accounting. Perfected by professionals.
             </p>
           </div>
 
