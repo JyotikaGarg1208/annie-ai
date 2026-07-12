@@ -86,7 +86,7 @@ function Contact() {
                     </p>
 
                     <p className="font-body text-sm text-muted-foreground">
-                      hello@annie.global
+                      hello@annieai.net
                     </p>
                   </div>
                 </div>
