@@ -30,12 +30,41 @@ export const Route = createFileRoute("/contact")({
 });
 
 function Contact() {
+  const ACCESS_KEY = "5b2197f8-eb13-435e-a505-abe8eff89b24";
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSubmitted(true);
-  };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+
+  setLoading(true);
+
+  const form = e.currentTarget;
+
+  const formData = new FormData(form);
+
+  formData.append("access_key", ACCESS_KEY);
+
+  try {
+    const response = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: formData,
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      form.reset();
+      setSubmitted(true);
+    } else {
+      alert("Unable to send your message. Please try again.");
+    }
+  } catch {
+    alert("Unable to send your message. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <>
@@ -111,12 +140,17 @@ function Contact() {
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="border border-border p-2">
+                  <a
+                    href="https://maps.google.com/?q=Century+City+Los+Angeles+CA"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="border border-border p-2 transition-colors hover:bg-secondary"
+                >
                     <MapPin
                       className="h-5 w-5 text-foreground"
                       strokeWidth={1.5}
                     />
-                  </div>
+                  </a>
 
                   <div>
                     <p className="font-body text-sm font-medium text-foreground">
@@ -134,6 +168,7 @@ function Contact() {
 
             {/* Contact Form */}
             <div className="border border-border bg-card p-8">
+
               {submitted ? (
                 <div className="text-center">
                   <h3 className="font-display text-2xl text-card-foreground">
@@ -146,7 +181,11 @@ function Contact() {
                   </p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form
+                  onSubmit={handleSubmit}
+                  className="space-y-6"
+                >
+
                   <div className="grid gap-6 sm:grid-cols-2">
 
                     <div className="space-y-2">
@@ -163,7 +202,7 @@ function Contact() {
                         type="text"
                         required
                         placeholder="Jane Doe"
-                        className="w-full border border-input bg-background px-4 py-3 font-body text-sm text-foreground outline-none focus:border-foreground"
+                        className="w-full rounded-md border border-input bg-background px-4 py-3 font-body text-sm text-foreground outline-none focus:border-foreground"
                       />
                     </div>
 
@@ -181,7 +220,7 @@ function Contact() {
                         type="email"
                         required
                         placeholder="jane@company.com"
-                        className="w-full border border-input bg-background px-4 py-3 font-body text-sm text-foreground outline-none focus:border-foreground"
+                        className="w-full rounded-md border border-input bg-background px-4 py-3 font-body text-sm text-foreground outline-none focus:border-foreground"
                       />
                     </div>
 
@@ -200,7 +239,7 @@ function Contact() {
                       name="company"
                       type="text"
                       placeholder="Acme Inc."
-                      className="w-full border border-input bg-background px-4 py-3 font-body text-sm text-foreground outline-none focus:border-foreground"
+                      className="w-full rounded-md border border-input bg-background px-4 py-3 font-body text-sm text-foreground outline-none focus:border-foreground"
                     />
                   </div>
 
@@ -218,19 +257,21 @@ function Contact() {
                       rows={5}
                       required
                       placeholder="Tell us about what you'd like Annie to handle..."
-                      className="w-full border border-input bg-background px-4 py-3 font-body text-sm text-foreground outline-none focus:border-foreground"
+                      className="w-full rounded-md border border-input bg-background px-4 py-3 font-body text-sm text-foreground outline-none focus:border-foreground"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="inline-flex w-full items-center justify-center rounded-md bg-primary px-8 py-4 font-body text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-                  >
-                    Send message
+                    disabled={loading}
+                    className="inline-flex w-full items-center justify-center rounded-md bg-primary px-8 py-4 font-body text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
+                    >
+                    {loading ? "Sending..." : "Send message"}
                   </button>
 
                 </form>
               )}
+
             </div>
 
           </div>
