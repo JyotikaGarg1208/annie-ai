@@ -39,7 +39,7 @@ function Pricing() {
               href="/contact"
               className="mt-10 inline-flex w-full items-center justify-center rounded-md bg-primary px-8 py-4 font-body text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 sm:w-auto sm:px-10"
             >
-              Book a consultation
+              Contact Sales
             </a>
           </div>
         </Container>
